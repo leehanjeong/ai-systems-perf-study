@@ -1,6 +1,6 @@
-# AI Systems Performance Engineering - Korean Study Notes
+# AI Systems Performance Engineering - Study Notes
 
-Chris Fregly, [AI Systems Performance Engineering](https://www.oreilly.com/library/view/ai-systems-performance/9798341627772/) (O'Reilly, 2025)을 순차 학습하며 정리하는 노트.
+Chris Fregly, [AI Systems Performance Engineering](https://www.oreilly.com/library/view/ai-systems-performance/9798341627772/) (O'Reilly, 2025)을 학습하며 정리하는 노트.
 
 ## 구조
 
