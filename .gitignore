@@ -1,32 +1,9 @@
-# Book PDF (copyrighted, not redistributable)
-book.pdf
-*.pdf
-
-# Private notes - personal application notes, not for the public repo
-/private_notes/
-
-# Build script for private->public notes (kept private to avoid leaking the
-# existence of the master/private workflow)
-scripts/build_public_notes.py
-
-# Extracted text working files
-/tmp/
-*.txt
-!templates/*.txt
-!study_notes/*.txt
-
-# Python
-__pycache__/
-*.pyc
-*.pyo
-.venv/
-venv/
-
-# OS / Editor
+# OS / editor
 .DS_Store
 .vscode/
 .idea/
 *.swp
 
-# Claude Code config (personal commands, agents, settings)
-.claude/
+# Python
+__pycache__/
+*.pyc
