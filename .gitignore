@@ -5,6 +5,10 @@ book.pdf
 # Private notes - personal application notes, not for the public repo
 /private_notes/
 
+# Build script for private->public notes (kept private to avoid leaking the
+# existence of the master/private workflow)
+scripts/build_public_notes.py
+
 # Extracted text working files
 /tmp/
 *.txt
