@@ -2,6 +2,48 @@
 
 > Ch 1에서 책이 "FLOPS와 device utilization은 misleading하다"고 한 이유. 두 지표가 정확히 무엇을 말하고, 왜 못 믿는가.
 
+## Quick Reference - GPU 용어 (이 노트에서 자주 등장)
+
+자세한 설명은 책 Ch 6 이후. 여기선 이 노트 이해에 필요한 정도만.
+
+- **SM (Streaming Multiprocessor)**: GPU 안의 기본 처리 단위. CPU의 코어 같은 것. H100=132개, B200=148개. 한 SM 안에 CUDA core + Tensor Core + shared memory + warp scheduler가 모두 들어있음.
+- **CUDA core**: SM 안의 기본 FP32 스칼라 계산 유닛. 한 SM에 64-128개. 전통 그래픽/일반 연산 담당.
+- **Tensor Core**: SM 안의 **행렬 곱셈(GEMM) 전용 가속 유닛**. 작은 matrix multiply를 한 사이클에 수행. AI 학습/추론에서 실제 일하는 주력. FP16/BF16/FP8/FP4 같은 reduced precision일수록 압도적으로 빠름. Volta(V100)에 도입, Hopper의 Transformer Engine, Blackwell로 진화.
+- **Warp**: 32개 thread가 묶여 같은 instruction을 동시에 실행 (SIMT). SM은 warp 단위로 스케줄링.
+- **HBM (High Bandwidth Memory)**: GPU 칩 옆에 적층된(stacked) DRAM. 매우 빠른 대역폭 (3-8 TB/s). 모델 weights / activations / KV cache 가 모두 여기에 들어감. 현재 GPU당 용량 상한은 192-288 GB.
+- **DRAM / "memory" 와의 관계**: GPU에서 "메모리"라 하면 거의 HBM. CPU의 main memory와 별개. PCIe를 통해 CPU와 GPU 사이 데이터 이동이 일어남 (느림).
+
+### GPU 내부 구조 (모식도)
+
+```mermaid
+flowchart TB
+    subgraph GPU["GPU (예: H100 = 132 SMs)"]
+        direction TB
+        SM1["SM #1"]
+        SM2["SM #2"]
+        SMd["..."]
+        SMN["SM #132"]
+    end
+
+    subgraph SMInside["1개 SM 내부"]
+        direction TB
+        CUDA["CUDA cores (64-128개)<br/>FP32 스칼라 연산"]
+        TC["Tensor Cores (4개)<br/>GEMM 가속 / 주력"]
+        SHM["Shared Memory + L1<br/>(SM 전용 빠른 캐시)"]
+        WS["Warp Scheduler<br/>32 thread = 1 warp"]
+    end
+
+    HBM["HBM (3-8 TB/s, 192-288 GB)<br/>weights / activations / KV cache"]
+    L2["L2 Cache (GPU 전체 공유)"]
+    PCIE["PCIe → CPU memory (느림)"]
+
+    HBM --> L2 --> GPU
+    PCIE -.-> HBM
+    SM1 -.-> SMInside
+```
+
+(thread → warp(32 thread) → block → grid 계층은 책 Ch 6에서 자세히)
+
 ## FLOPS
 
 ### 정의
@@ -19,7 +61,81 @@
 | PFLOPS | 10^15 |
 | EFLOPS | 10^18 |
 
-### 정밀도(precision)에 따라 FLOPS가 다르다
+### 부동소수점 정밀도 종류 (FP64, FP32, FP16, BF16, FP8, FP4)
+
+모든 부동소수점은 IEEE 754(또는 그 확장) 구조로 세 부분:
+
+- **Sign (1 bit)**: 양수/음수
+- **Exponent**: 표현 가능한 값의 범위 (얼마나 크고 작은 수까지)
+- **Mantissa (fraction)**: 정밀도 (유효 숫자 자릿수)
+
+비트가 많을수록 정밀+범위 ↑, 적을수록 메모리/속도/대역폭 ↑. AI 학습/추론은 약간의 수치 손실이 허용되므로 **reduced precision** 추세.
+
+#### 포맷별 구조
+
+| 포맷 | 총 비트 | Sign | Exp | Mantissa | 표현 범위 | 정밀도 |
+|---|---:|---:|---:|---:|---|---|
+| FP64 (double) | 64 | 1 | 11 | 52 | ~1.8e308 | ~15-17 자리 |
+| FP32 (single, "float") | 32 | 1 | 8 | 23 | ~3.4e38 | ~7 자리 |
+| TF32 (NVIDIA, Ampere+) | 19 (저장은 32) | 1 | 8 | 10 | FP32와 동일 | ~3 자리 |
+| BF16 (bfloat16) | 16 | 1 | 8 | 7 | FP32와 동일 | ~2-3 자리 |
+| FP16 (half) | 16 | 1 | 5 | 10 | ~6.5e4 | ~3-4 자리 |
+| FP8 E4M3 | 8 | 1 | 4 | 3 | ~448 | 매우 낮음 |
+| FP8 E5M2 | 8 | 1 | 5 | 2 | ~57344 | 매우 낮음 |
+| FP4 (E2M1 등) | 4 | 1 | 2 | 1 | 매우 좁음 | 매우 낮음 |
+
+FP8/FP4는 IEEE 754 표준 외. NVIDIA / Open Compute Project 등이 정의 (예: Blackwell의 microscaling MXFP4).
+
+비트 배치 비교 (시각):
+
+```
+FP32 (32-bit):  S | EEEEEEEE | MMMMMMMMMMMMMMMMMMMMMMM
+                1 |    8     |          23
+
+BF16 (16-bit):  S | EEEEEEEE | MMMMMMM           <- FP32와 같은 exponent 폭
+                1 |    8     |    7
+
+FP16 (16-bit):  S | EEEEE | MMMMMMMMMM           <- mantissa 더 많지만 range 좁음
+                1 |   5   |    10
+
+FP8 E4M3:       S | EEEE | MMM
+                1 |   4  |   3
+
+FP8 E5M2:       S | EEEEE | MM                   <- range 우선, 정밀 더 낮음
+                1 |   5   |  2
+
+FP4 (E2M1):     S | EE | M
+                1 |  2 | 1
+```
+
+(가독성을 위해 칸 너비는 실제 비트 비율과 다소 다름)
+
+#### 어떤 용도에 어떤 정밀도
+
+| 용도 | 권장 정밀도 |
+|---|---|
+| HPC 시뮬레이션 (정확도 critical) | FP64 |
+| 전통 ML 학습 (안전 baseline) | FP32 |
+| 현대 LLM 학습 (사실상 표준) | **BF16** (loss scaling 불필요) |
+| 학습 mixed precision (옛 방식) | FP16 (loss scaling 필요) |
+| Ampere+에서 FP32 코드 자동 가속 | TF32 (FP32 호출 그대로 두면 자동) |
+| Hopper+ 학습/추론 | FP8 |
+| Blackwell+ 추론 | FP4 |
+| 추론 quantization (FP 아님) | INT8 (GPTQ/AWQ 등) |
+
+#### BF16 vs FP16 (자주 헷갈림)
+
+- **FP16**: mantissa 10 bit로 정밀하지만 exponent 5 bit라 **range 좁음**. gradient가 작아지면 underflow -> **loss scaling 기법 필요**.
+- **BF16**: mantissa 7 bit로 덜 정밀하지만 exponent 8 bit (FP32와 동일)라 **range 넓음**. loss scaling 불필요. NVIDIA Ampere부터 Tensor Core 지원. 현대 LLM 학습 사실상 표준.
+
+#### 왜 reduced precision인가
+
+- **메모리**: 100B 모델 weights를 FP32면 400 GB, BF16이면 200 GB, FP8이면 100 GB. HBM 용량 제한 안에 더 큰 모델 들어감.
+- **속도**: Tensor Core가 reduced precision일수록 더 많은 연산. B200 FP8은 FP16의 2배, FP4는 FP8의 2배.
+- **대역폭**: HBM->GPU 데이터 전송 시 비트 적을수록 빠름. memory-bound 워크로드 (예: LLM decode)에서 결정적.
+- **trade-off**: 너무 줄이면 학습 발산 / 추론 품질 저하. mixed precision (계산은 low, master weights는 FP32) 또는 quantization-aware training 같은 기법 필요.
+
+### 정밀도에 따라 FLOPS가 다르다
 
 같은 GPU도 데이터 타입별 peak가 다름. Tensor Core는 reduced precision일수록 빠름.
 
