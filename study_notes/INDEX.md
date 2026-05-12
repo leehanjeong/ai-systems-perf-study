@@ -38,6 +38,7 @@
 | 토큰 (LLM의 처리/비용/throughput 단위) | [concepts/tokens.md](concepts/tokens.md) |
 | Goodput 실제 계산법 (ETTR, MFU, inference SLO) | [concepts/goodput_calculation.md](concepts/goodput_calculation.md) |
 | 단위와 메모리 계산법 (K/M/G/T, 모델 메모리, GPU 세대) | [concepts/units_and_memory.md](concepts/units_and_memory.md) |
+| Training Basics (Forward/Backward, chain rule, FLOPs/메모리 회계) | [concepts/training_basics.md](concepts/training_basics.md) |
 
 ## Cross-references
 
