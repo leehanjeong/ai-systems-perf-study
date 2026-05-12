@@ -37,6 +37,7 @@
 | FLOPS와 device utilization (왜 misleading한가) | [concepts/flops_and_utilization.md](concepts/flops_and_utilization.md) |
 | 토큰 (LLM의 처리/비용/throughput 단위) | [concepts/tokens.md](concepts/tokens.md) |
 | Goodput 실제 계산법 (ETTR, MFU, inference SLO) | [concepts/goodput_calculation.md](concepts/goodput_calculation.md) |
+| 단위와 메모리 계산법 (K/M/G/T, 모델 메모리, GPU 세대) | [concepts/units_and_memory.md](concepts/units_and_memory.md) |
 
 ## Cross-references
 

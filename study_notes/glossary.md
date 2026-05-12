@@ -9,6 +9,7 @@
 | 용어 | 한국어 | 한 줄 정의 | 등장 |
 |---|---|---|---|
 | BF16 (bfloat16) | - | 16-bit FP (1+8+7). FP32와 같은 range, 적은 mantissa. 현대 LLM 학습 표준. loss scaling 불필요 | [concepts/flops_and_utilization](concepts/flops_and_utilization.md) |
+| Blackwell | NVIDIA GPU 세대 (2024~) | B200/B300/GB200. FP4 Tensor Core, NVLink5 | [ch01](ch01_intro.md), [concepts/units_and_memory](concepts/units_and_memory.md) |
 | BPE (Byte-Pair Encoding) | - | 빈도 높은 byte/char pair를 반복 병합하는 subword tokenization | [concepts/tokens](concepts/tokens.md) |
 
 ## C
@@ -53,6 +54,7 @@
 |---|---|---|---|
 | Goodput | 유용한 처리량 | 시스템이 실제로 useful work에 쓴 시간 비율 (Meta ETTR) | [ch01](ch01_intro.md), [concepts/goodput_calculation](concepts/goodput_calculation.md) |
 | GPU-Util | - | nvidia-smi 지표. kernel이 떠 있던 시간만 측정. SM stall 못 잡음 | [concepts/flops_and_utilization](concepts/flops_and_utilization.md) |
+| Grace | NVIDIA ARM CPU | NVL72의 CPU. Blackwell GPU와 superchip 구성 | [ch01](ch01_intro.md) |
 
 ## H
 
@@ -60,6 +62,7 @@
 |---|---|---|---|
 | HBM (High Bandwidth Memory) | - | GPU 칩 옆 stacked DRAM. 3-8 TB/s, 192-288 GB. weights/activations/KV cache | [ch01](ch01_intro.md), [concepts/flops_and_utilization](concepts/flops_and_utilization.md) |
 | HFU (Hardware FLOPs Utilization) | - | 실제 실행 FLOPs / peak. recompute 등 redundant compute 포함 | [concepts/flops_and_utilization](concepts/flops_and_utilization.md), [concepts/goodput_calculation](concepts/goodput_calculation.md) |
+| Hopper | NVIDIA GPU 세대 (2022~) | H100/H200/H800. FP8 Tensor Core, Transformer Engine | [ch01](ch01_intro.md), [concepts/units_and_memory](concepts/units_and_memory.md) |
 
 ## M
 
@@ -85,6 +88,12 @@
 |---|---|---|---|
 | PP (Pipeline Parallelism) | 파이프라인 병렬 | 모델 레이어를 GPU 분산해 micro-batch로 흐르기 | [ch01](ch01_intro.md) |
 | Prefill | - | LLM 추론 첫 단계. 입력 prompt 전체를 한 번에 처리 (compute-bound) | [concepts/tokens](concepts/tokens.md) |
+
+## R
+
+| 용어 | 한국어 | 한 줄 정의 | 등장 |
+|---|---|---|---|
+| Reduced precision | 줄어든 정밀도 | FP32 기본 대신 BF16/FP8/FP4 등 더 적은 비트. 메모리/속도/대역폭 ↑, 정확도 ↓ | [concepts/flops_and_utilization](concepts/flops_and_utilization.md), [concepts/units_and_memory](concepts/units_and_memory.md) |
 
 ## S
 

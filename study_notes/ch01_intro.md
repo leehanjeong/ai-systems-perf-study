@@ -71,6 +71,10 @@ PyMuPDF p.17-46 | Pages 1-31
 | MIG (Multi-Instance GPU) | 그대로 | GPU를 분할해 여러 워크로드에 나눠 줌 |
 | HBM (High Bandwidth Memory) | 그대로 | GPU 칩 옆 stacked DRAM. B200=192GB, B300=288GB |
 | NVL72 | 그대로 | rack 안 72-GPU NVLink 도메인 (36 Grace + 72 Blackwell) |
+| Hopper | NVIDIA GPU 세대 | 2022~. H100 / H200 / H800. FP8 Tensor Core 도입 |
+| Blackwell | NVIDIA GPU 세대 | 2024~. B200 / B300 / GB200. FP4 Tensor Core, NVLink5 |
+| Grace | NVIDIA ARM CPU | NVL72의 CPU. Blackwell GPU와 superchip 구성 |
+| Reduced precision | 줄어든 정밀도 | FP32 대신 BF16/FP8/FP4 등 더 적은 비트. 메모리/속도/대역폭 ↑, 정확도 ↓ |
 
 ## 핵심 숫자/벤치마크
 
