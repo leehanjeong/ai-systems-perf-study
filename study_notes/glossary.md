@@ -24,6 +24,7 @@
 | 용어 | 한국어 | 한 줄 정의 | 등장 |
 |---|---|---|---|
 | DCGM | - | NVIDIA GPU monitoring 데이터 모델. PROF_* 시리즈가 honest 활용도 지표 | [concepts/flops_and_utilization](concepts/flops_and_utilization.md) |
+| DGX | - | NVIDIA가 직접 만들어 파는 완성 GPU 서버 (HGX 보드 + NVIDIA 통합) | [concepts/units_and_memory](concepts/units_and_memory.md) |
 | DP (Data Parallelism) | 데이터 병렬 | 같은 모델 복제, 다른 미니배치 | [ch01](ch01_intro.md) |
 | DualPipe | - | DeepSeek의 bidirectional pipeline parallelism. fwd/bwd를 통신과 overlap | [ch01](ch01_intro.md) |
 
@@ -62,7 +63,14 @@
 |---|---|---|---|
 | HBM (High Bandwidth Memory) | - | GPU 칩 옆 stacked DRAM. 3-8 TB/s, 192-288 GB. weights/activations/KV cache | [ch01](ch01_intro.md), [concepts/flops_and_utilization](concepts/flops_and_utilization.md) |
 | HFU (Hardware FLOPs Utilization) | - | 실제 실행 FLOPs / peak. recompute 등 redundant compute 포함 | [concepts/flops_and_utilization](concepts/flops_and_utilization.md), [concepts/goodput_calculation](concepts/goodput_calculation.md) |
+| HGX | - | NVIDIA가 만드는 8-GPU baseboard 모듈. OEM(Supermicro/Dell 등)이 서버에 통합 | [concepts/units_and_memory](concepts/units_and_memory.md) |
 | Hopper | NVIDIA GPU 세대 (2022~) | H100/H200/H800. FP8 Tensor Core, Transformer Engine | [ch01](ch01_intro.md), [concepts/units_and_memory](concepts/units_and_memory.md) |
+
+## I
+
+| 용어 | 한국어 | 한 줄 정의 | 등장 |
+|---|---|---|---|
+| INT8 | - | 8-bit 정수. 추론 quantization (GPTQ/AWQ/SmoothQuant)용. 균등 간격, scale factor로 실수 표현 | [concepts/flops_and_utilization](concepts/flops_and_utilization.md) |
 
 ## M
 
@@ -80,7 +88,8 @@
 |---|---|---|---|
 | NCCL | "nickel" | GPU collective 통신 라이브러리 (all-reduce, all-gather 등) | [ch01](ch01_intro.md) |
 | NIXL (NVIDIA Inference Xfer Library) | - | 추론용 point-to-point 데이터 이동 (KV cache 등) | [ch01](ch01_intro.md) |
-| NVL72 | - | rack 안 72-GPU NVLink 도메인 (36 Grace + 72 Blackwell) | [ch01](ch01_intro.md) |
+| NVL72 | - | rack 안 72-GPU NVLink 도메인 (36 Grace + 72 Blackwell). GB200 18개 + NVSwitch | [ch01](ch01_intro.md), [concepts/units_and_memory](concepts/units_and_memory.md) |
+| NVLink-C2C | - | Grace CPU와 Blackwell GPU 사이 cache-coherent 연결. 900 GB/s, PCIe 대비 14배 | [concepts/units_and_memory](concepts/units_and_memory.md) |
 
 ## P
 
@@ -95,6 +104,12 @@
 |---|---|---|---|
 | Reduced precision | 줄어든 정밀도 | FP32 기본 대신 BF16/FP8/FP4 등 더 적은 비트. 메모리/속도/대역폭 ↑, 정확도 ↓ | [concepts/flops_and_utilization](concepts/flops_and_utilization.md), [concepts/units_and_memory](concepts/units_and_memory.md) |
 
+## Q
+
+| 용어 | 한국어 | 한 줄 정의 | 등장 |
+|---|---|---|---|
+| Quantization (GPTQ / AWQ / SmoothQuant) | 양자화 | 학습 완료 모델을 INT8/INT4 등으로 변환. GPTQ=layer별, AWQ=activation 고려, SmoothQuant=outlier 처리 | [concepts/flops_and_utilization](concepts/flops_and_utilization.md) |
+
 ## S
 
 | 용어 | 한국어 | 한 줄 정의 | 등장 |
@@ -103,6 +118,8 @@
 | SLO (Service Level Objective) | - | 응답 시간/품질 목표. 어긴 요청은 inference goodput에서 제외 | [concepts/goodput_calculation](concepts/goodput_calculation.md) |
 | SM (Streaming Multiprocessor) | - | GPU 처리 단위. CPU 코어 같은 것. H100=132, B200=148. CUDA core + Tensor Core + warp scheduler 포함 | [concepts/flops_and_utilization](concepts/flops_and_utilization.md) |
 | Speed of light | 이론 최대치 | NVIDIA 용어. 하드웨어가 낼 수 있는 peak | [ch01](ch01_intro.md) |
+| Superchip | - | NVIDIA의 CPU+GPU 결합 단일 보드. NVLink-C2C로 cache-coherent. GH200, GB200 | [concepts/units_and_memory](concepts/units_and_memory.md) |
+| SuperPOD | - | DGX 다수를 묶은 NVIDIA reference architecture (31-127대) | [concepts/units_and_memory](concepts/units_and_memory.md) |
 
 ## T
 

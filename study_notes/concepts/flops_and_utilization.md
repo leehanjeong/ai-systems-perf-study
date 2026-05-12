@@ -135,6 +135,44 @@ FP4 (E2M1):     S | EE | M
 - **대역폭**: HBM->GPU 데이터 전송 시 비트 적을수록 빠름. memory-bound 워크로드 (예: LLM decode)에서 결정적.
 - **trade-off**: 너무 줄이면 학습 발산 / 추론 품질 저하. mixed precision (계산은 low, master weights는 FP32) 또는 quantization-aware training 같은 기법 필요.
 
+#### FP vs INT - 부동소수점 vs 정수 quantization
+
+추론에서 FP8/FP4와 함께 자주 쓰이는 게 **INT8 (8-bit 정수) quantization**. 둘은 표현 방식 자체가 다름.
+
+| 측면 | FP8 / FP4 (부동소수점) | INT8 (정수) |
+|---|---|---|
+| 구조 | sign + exponent + mantissa | sign + magnitude (또는 unsigned 0-255) |
+| 표현 범위 | 매우 넓음 (FP8 E5M2는 ±57344) | -128 ~ +127 정수만 |
+| 표현 간격 | **logarithmic** (0 근처 정밀, 멀수록 거침) | **linear** (어디서나 1 단위 균등) |
+| 소수 표현 | 가능 (mantissa 비트로) | 불가능 (정수만, scale 곱해 흉내) |
+| 메모리/param | FP8=1 byte, FP4=0.5 byte | 1 byte |
+| HW 가속 | Hopper+(FP8) / Blackwell+(FP4) Tensor Core | Turing+ (대부분 GPU) |
+| 학습/추론 | FP8 학습 가능, FP4 추론 only | 추론 only |
+| 대표 사용 | 학습 + 추론 | weight quantization (GPTQ / AWQ / SmoothQuant) |
+
+INT8 weight quantization 동작:
+```
+실제 weight = stored_INT8 × scale
+```
+weight 분포에 맞춰 scale 추정 (GPTQ / AWQ / SmoothQuant 등 알고리즘 차이).
+
+같은 8비트인데 표현 간격 차이:
+```
+FP8 E4M3 (logarithmic):
+    1 근처:   0.0078 간격  (정밀)
+  100 근처:   0.78 간격    (거침)
+
+INT8 (linear):
+    1 근처:   1 간격
+  100 근처:   1 간격       (어디나 동일)
+```
+
+**언제 어느 게 좋은가**:
+- 신경망 activation / gradient는 **0 근처에 집중** → **FP가 자연스럽게 맞음** (작은 값을 정밀 표현)
+- 학습된 weight는 **분포가 균등에 가까움** → **INT8 quantization도 OK** (post-training quantization로 충분)
+- 메모리 가장 압축 → **FP4** (0.5 B/p, Blackwell 가속)
+- GPU 호환성 최대 → **INT8** (모든 modern GPU)
+
 ### 정밀도에 따라 FLOPS가 다르다
 
 같은 GPU도 데이터 타입별 peak가 다름. Tensor Core는 reduced precision일수록 빠름.
