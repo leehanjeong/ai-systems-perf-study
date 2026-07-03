@@ -1,0 +1,123 @@
+<?xml version="1.0"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="100%" height="100%" viewBox="0 0 140 700">
+ <title>Dry-etching in photolithography</title>
+ <desc>Simplified illustration of dry-etching using positive photoresist during a photolithography process in semiconductor microfabrication, drawn by CMG Lee. Note: Not to scale.</desc>
+ <defs>
+  <linearGradient id="gradient_mask" x1="100%" y1="0%" x2="0%" y2="100%">
+   <stop offset="20%" stop-color="#ffffff" stop-opacity="0"/>
+   <stop offset="50%" stop-color="#ffffff" stop-opacity="1"/>
+   <stop offset="80%" stop-color="#ffffff" stop-opacity="0"/>
+  </linearGradient>
+  <pattern id="pattern_light" patternUnits="userSpaceOnUse" width="5" height="100">
+   <path d="M 2 0 V 69 m -2 -4 l 2 4 l 2 -4" stroke="#ff00ff"/>
+  </pattern>
+
+  <g id="substrate">
+   <rect x="0" y="0" width="100" height="30" fill="#ffff66"/>
+   <path d="M 0 0 H 100 M 0 30 H 100" stroke="#000000" fill="none"/>
+   <switch><text x="1" y="20" font-weight="bold" font-size="10" id="trsvg23-fr" systemLanguage="fr"><tspan id="trsvg1-fr">substrat</tspan></text><text x="1" y="20" font-weight="bold" font-size="10" id="trsvg23-ga" systemLanguage="ga"><tspan id="trsvg1-ga">substr&#xE1;it</tspan></text><text x="1" y="20" font-weight="bold" font-size="10" id="trsvg23"><tspan id="trsvg1">substrate</tspan></text></switch>
+  </g>
+  <switch><text id="oxide_label-fr" x="1" y="-3" font-weight="bold" font-size="10" systemLanguage="fr"><tspan id="trsvg2-fr">oxyde</tspan></text><text id="oxide_label-ga" x="1" y="-3" font-weight="bold" font-size="10" systemLanguage="ga"><tspan id="trsvg2-ga">ocsa&#xED;d</tspan></text><text id="oxide_label" x="1" y="-3" font-weight="bold" font-size="10"><tspan id="trsvg2">oxide</tspan></text></switch>
+  <g id="oxide_full">
+   <rect x="0" y="-15" width="100" height="15" fill="#cccccc"/>
+   <path d="M 0 -15 H 100" stroke="#000000" fill="none"/>
+   <use xlink:href="#oxide_label"/>
+  </g>
+  <g id="oxide_etched">
+   <rect x="0" y="-15" width="30" height="15" fill="#cccccc"/>
+   <rect x="70" y="-15" width="30" height="15" fill="#cccccc"/>
+   <path d="M 0 -15 H 30 V 0 M 70 0 V -15 H 100" stroke="#000000" fill="none"/>
+   <use xlink:href="#oxide_label"/>
+  </g>
+  <switch><text id="photoresist_label-ga" x="1" y="-18" font-weight="bold" systemLanguage="ga"><tspan id="trsvg3-ga">f&#xF3;taifhriota&#xED;</tspan></text><text id="photoresist_label" x="1" y="-18" font-weight="bold"><tspan id="trsvg3">PR</tspan></text></switch>
+  <g id="photoresist_full">
+   <rect x="0" y="-30" width="100" height="15" fill="#cc6633"/>
+   <path d="M 0 -30 H 100" stroke="#000000" fill="none"/>
+   <use xlink:href="#photoresist_label"/>
+  </g>
+  <g id="photoresist_unexposed">
+   <rect x="0" y="-30" width="30" height="15" fill="#cc6633"/>
+   <rect x="70" y="-30" width="30" height="15" fill="#cc6633"/>
+   <path d="M 0 -30 H 30 V -15 M 70 -15 V -30 H 100" stroke="#000000" fill="none"/>
+   <use xlink:href="#photoresist_label"/>
+  </g>
+  <g id="photoresist_exposed">
+   <rect x="30" y="-30" width="40" height="15" fill="#ff9966"/>
+   <path d="M 30 -30 H 70" stroke="#000000" fill="none"/>
+  </g>
+  <g id="mask">
+   <rect x="0" y="-70" width="100" height="15" fill="#6699ff"/>
+   <rect x="0" y="-70" width="100" height="15" fill="url(#gradient_mask)"/>
+   <path d="M 0 -70 H 100 M 0 -55 H 100" stroke="#000000" fill="none"/>
+   <switch><text x="1" y="-59" font-weight="bold" id="trsvg24-fr" systemLanguage="fr"><tspan id="trsvg4-fr">verre</tspan></text><text x="1" y="-59" font-weight="bold" id="trsvg24-ga" systemLanguage="ga"><tspan id="trsvg4-ga">gloine</tspan></text><text x="1" y="-59" font-weight="bold" id="trsvg24"><tspan id="trsvg4">glass</tspan></text></switch>
+   <rect x="0" y="-55" width="30" height="15" fill="#000000"/>
+   <rect x="70" y="-55" width="30" height="15" fill="#000000"/>
+   <switch><text x="1" y="-43" fill="#ffffff" font-weight="bold" id="trsvg25-ga" systemLanguage="ga"><tspan id="trsvg5-ga">Cr&#xF3;imiam</tspan></text><text x="1" y="-43" fill="#ffffff" font-weight="bold" id="trsvg25"><tspan id="trsvg5">Cr</tspan></text></switch>
+  </g>
+  <path id="light" d="M 0 -90 V -55 H 30 V -30 H 70 V -55 H 100 V -90" fill="url(#pattern_light)"/>
+  <g id="frame1">
+   <use xlink:href="#oxide_full"/>
+   <use xlink:href="#substrate"/>
+   <switch><text x="-20" y="-20" id="trsvg26"><tspan id="trsvg6">a.</tspan></text></switch>
+   <switch><text x="-5" y="-20" id="trsvg27-fr" systemLanguage="fr"><tspan id="trsvg7-fr">Pr&#xE9;paration</tspan></text><text x="-5" y="-20" id="trsvg27-ga" systemLanguage="ga"><tspan id="trsvg7-ga">Ullmhaigh an sliseog </tspan></text><text x="-5" y="-20" id="trsvg27"><tspan id="trsvg7">Prepare wafer</tspan></text></switch>
+  </g>
+  <g id="frame2">
+   <use xlink:href="#photoresist_full"/>
+   <use xlink:href="#oxide_full"/>
+   <use xlink:href="#substrate"/>
+   <switch><text x="-20" y="-35" id="trsvg28"><tspan id="trsvg8">b.</tspan></text></switch>
+   <switch><text x="-5" y="-35" id="trsvg29-fr" systemLanguage="fr"><tspan id="trsvg9-fr">Enduction</tspan></text><text x="-5" y="-35" id="trsvg29-ga" systemLanguage="ga"><tspan id="trsvg9-ga">Cuir f&#xF3;taifhriota&#xED; air</tspan></text><text x="-5" y="-35" id="trsvg29"><tspan id="trsvg9">Apply photoresist</tspan></text></switch>
+  </g>
+  <g id="frame3">
+   <use xlink:href="#mask"/>
+   <use xlink:href="#photoresist_full"/>
+   <use xlink:href="#oxide_full"/>
+   <use xlink:href="#substrate"/>
+   <switch><text x="-20" y="-75" id="trsvg30"><tspan id="trsvg10">c.</tspan></text></switch>
+   <switch><text x="-5" y="-75" id="trsvg31-fr" systemLanguage="fr"><tspan id="trsvg11-fr">ALignement masque</tspan></text><text x="-5" y="-75" id="trsvg31-ga" systemLanguage="ga"><tspan id="trsvg11-ga">Ail&#xED;nigh f&#xF3;tamasc</tspan></text><text x="-5" y="-75" id="trsvg31"><tspan id="trsvg11">Align photomask</tspan></text></switch>
+  </g>
+  <g id="frame4">
+   <use xlink:href="#mask"/>
+   <use xlink:href="#light"/>
+   <use xlink:href="#photoresist_full"/>
+   <use xlink:href="#photoresist_exposed"/>
+   <use xlink:href="#oxide_full"/>
+   <use xlink:href="#substrate"/>
+   <switch><text x="-20" y="-95" id="trsvg32"><tspan id="trsvg12">d.</tspan></text></switch>
+   <switch><text x="-5" y="-95" id="trsvg33-fr" systemLanguage="fr"><tspan id="trsvg13-fr">Insolation UV</tspan></text><text x="-5" y="-95" id="trsvg33-ga" systemLanguage="ga"><tspan id="trsvg13-ga">Nocht don solas UV</tspan></text><text x="-5" y="-95" id="trsvg33"><tspan id="trsvg13">Expose to UV light</tspan></text></switch>
+  </g>
+  <g id="frame5">
+   <use xlink:href="#photoresist_unexposed"/>
+   <use xlink:href="#oxide_full"/>
+   <use xlink:href="#substrate"/>
+   <switch><text x="-20" y="-59" id="trsvg34"><tspan id="trsvg14">e.</tspan></text></switch>
+   <switch><text x="-5" y="-59" id="trsvg35-fr" systemLanguage="fr"><tspan id="trsvg15-fr">D&#xE9;veloppement</tspan></text><text x="-5" y="-59" id="trsvg35-ga" systemLanguage="ga"><tspan id="trsvg15-ga">Forbair agus</tspan></text><text x="-5" y="-59" id="trsvg35"><tspan id="trsvg15">Develop and</tspan></text></switch>
+   <switch><text x="-5" y="-47" id="trsvg36-fr" systemLanguage="fr"><tspan id="trsvg16-fr">photor&#xE9;sine</tspan></text><text x="-5" y="-47" id="trsvg36-ga" systemLanguage="ga"><tspan id="trsvg16-ga">bain an f&#xF3;tamasc</tspan></text><text x="-5" y="-47" id="trsvg36"><tspan id="trsvg16">remove photoresist</tspan></text></switch>
+   <switch><text x="-5" y="-35" id="trsvg37-fr" systemLanguage="fr"><tspan id="trsvg17-fr">expos&#xE9;e aux UV</tspan></text><text x="-5" y="-35" id="trsvg37-ga" systemLanguage="ga"><tspan id="trsvg17-ga">nochtaithe don solas</tspan></text><text x="-5" y="-35" id="trsvg37"><tspan id="trsvg17">exposed to UV light</tspan></text></switch>
+  </g>
+  <g id="frame6">
+   <use xlink:href="#photoresist_unexposed"/>
+   <use xlink:href="#oxide_etched"/>
+   <use xlink:href="#substrate"/>
+   <switch><text x="-20" y="-35" id="trsvg38"><tspan id="trsvg18">f.</tspan></text></switch>
+   <switch><text x="-5" y="-35" id="trsvg39-fr" systemLanguage="fr"><tspan id="trsvg19-fr">Gravure oxyde</tspan></text><text x="-5" y="-35" id="trsvg39-ga" systemLanguage="ga"><tspan id="trsvg19-ga">Grean an ocsa&#xED;d nocht</tspan></text><text x="-5" y="-35" id="trsvg39"><tspan id="trsvg19">Etch exposed oxide</tspan></text></switch>
+  </g>
+  <g id="frame7">
+   <use xlink:href="#oxide_etched"/>
+   <use xlink:href="#substrate"/>
+   <switch><text x="-20" y="-32" id="trsvg40"><tspan id="trsvg20">g.</tspan></text></switch>
+   <switch><text x="-5" y="-32" id="trsvg41-fr" systemLanguage="fr"><tspan id="trsvg21-fr">Retrait photor&#xE9;sine</tspan></text><text x="-5" y="-32" id="trsvg41-ga" systemLanguage="ga"><tspan id="trsvg21-ga">Bain an chuid eile de</tspan></text><text x="-5" y="-32" id="trsvg41"><tspan id="trsvg21">Remove remaining</tspan></text></switch>
+   <switch><text x="-5" y="-20" id="trsvg42-fr" systemLanguage="fr"><tspan id="trsvg22-fr"> </tspan></text><text x="-5" y="-20" id="trsvg42-ga" systemLanguage="ga"><tspan id="trsvg22-ga">f&#xF3;taifhriota&#xED;</tspan></text><text x="-5" y="-20" id="trsvg42"><tspan id="trsvg22">photoresist</tspan></text></switch>
+  </g>
+ </defs>
+ <g id="main" font-family="sans-serif" font-size="14" letter-spacing="-1" text-anchor="start">
+  <use xlink:href="#frame1" transform="translate(20,32)"/>
+  <use xlink:href="#frame2" transform="translate(20,115)"/>
+  <use xlink:href="#frame3" transform="translate(20,240)"/>
+  <use xlink:href="#frame4" transform="translate(20,385)"/>
+  <use xlink:href="#frame5" transform="translate(20,495)"/>
+  <use xlink:href="#frame6" transform="translate(20,580)"/>
+  <use xlink:href="#frame7" transform="translate(20,665)"/>
+ </g>
+</svg>
